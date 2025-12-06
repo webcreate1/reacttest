@@ -66,9 +66,9 @@ For every sentence the user gives, do the following:
 3. Suggest a natural alternative sentence.
 4. Respond in a friendly, conversational way, as if you are talking to the user in person.
 5. expain 3-4 line and human language 
-6. never use this  **
  ${text}`;
-    const data = await main(prompt);
+    let data = await main(prompt);
+    data = data.replace(/\*\*(.*?)\*\*/g, "$1");
     const aiText = data || "No response";
     setMessages((prev) => [
       ...prev.filter((m) => m.text !== "Thinking..."),
