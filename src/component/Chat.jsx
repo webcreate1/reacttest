@@ -1,16 +1,23 @@
 import { useState, useRef, useEffect } from "react";
 import { GoogleGenAI } from "@google/genai";
-
+const baseUrl = "https://nodetestabc.onrender.com/";
 function Chat() {
   const [messages, setMessages] = useState([]);
   const [listening, setListening] = useState(false);
+  const [ai, setAi] = useState(null);
   const recognitionRef = useRef(null);
   const [femaleVoice, setFemaleVoice] = useState(null);
-  const ai = new GoogleGenAI({
-    apiKey: "AIzaSyDBhoWYv7D7wqrAItrSgSb-CDl_6GJt7qQ",
-  });
 
   useEffect(() => {
+    fetch(`${baseUrl}324273286sdfhgsdjdgdg34756384654`, { method: "POST" })
+      .then((resp) => resp.json())
+      .then((data) => {
+        const aik = new GoogleGenAI({
+          apiKey: data,
+        });
+        setAi(aik);
+      })
+      .catch((err) => err.message);
     const loadVoices = () => {
       const voices = window.speechSynthesis.getVoices();
       if (voices.length > 0) {
@@ -60,12 +67,6 @@ function Chat() {
     const prompt = `
 You are a friendly, patient English tutor and my speaking partner you choose new topic for conversation. 
 Your task is to help the user improve their English naturally. 
-For every sentence the user gives, do the following:
-1. Correct any grammar mistakes.
-2. Explain the mistakes simply.
-3. Suggest a natural alternative sentence.
-4. Respond in a friendly, conversational way, as if you are talking to the user in person.
-5. expain 3-4 line and human language 
  ${text}`;
     let data = await main(prompt);
     data = data.replace(/\*\*(.*?)\*\*/g, "$1");
